@@ -44,11 +44,6 @@ jobs:
   displayName: Run tests
 
   steps:
-  - task: ScreenResolutionUtility@1
-    displayName: 'Set optimal screen resolution'
-    inputs:
-      displaySettings: 'optimal'
-
   - task: Maven@3
     displayName: 'Run tests'
     inputs:
@@ -59,4 +54,4 @@ jobs:
       jdkArchitectureOption: 'x64'
       publishJUnitResults: true
       testResultsFiles: '**/surefire-reports/TEST-*.xml'
-      goals: 'test -Dprofile=local'
+      goals: 'test'

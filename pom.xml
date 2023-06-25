@@ -5,34 +5,9 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.github.aquality-automation</groupId>
-    <artifactId>aquality-selenium</artifactId>
-    <version>4.0.0</version>
-    <packaging>jar</packaging>
-    <name>Aquality Selenium</name>
-    <description>Library around Selenium WebDriver</description>
-    <url>https://github.com/aquality-automation/aquality-selenium-java</url>
-
-    <properties>
-        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    </properties>
-
-    <distributionManagement>
-        <snapshotRepository>
-            <id>ossrh</id>
-            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
-        </snapshotRepository>
-        <repository>
-            <id>ossrh</id>
-            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
-        </repository>
-    </distributionManagement>
-
-    <scm>
-        <connection>scm:git:git@github.com:aquality-automation/aquality-selenium-java.git</connection>
-        <developerConnection>scm:git:git@github.com:aquality-automation/aquality-selenium-java.git</developerConnection>
-        <url>https://github.com/aquality-automation/aquality-selenium-java</url>
-    </scm>
+    <artifactId>aquality-selenium-template-project</artifactId>
+    <packaging>pom</packaging>
+    <version>1.0.1-SNAPSHOT</version>
 
     <licenses>
         <license>
@@ -42,65 +17,60 @@
         </license>
     </licenses>
 
-    <developers>
-        <developer>
-            <id>DmitryBogatko</id>
-            <name>Dmitry Bogatko</name>
-        </developer>
-        <developer>
-            <id>pavelanihimovsky</id>
-            <name>Pavel Anihimovsky</name>
-        </developer>
-        <developer>
-            <id>Nikikuzi</id>
-            <name>Nikita Kuznetsov</name>
-        </developer>
-        <developer>
-            <id>mialeska</id>
-            <name>Alaksiej Mialeška</name>
-        </developer>
-        <developer>
-            <id>sunigos</id>
-            <name>Igor Sontsa</name>
-        </developer>
-        <developer>
-            <id>knysh</id>
-            <name>Sergey Knysh</name>
-        </developer>
-        <developer>
-            <id>d2kravchenko</id>
-            <name>Dmitry Kravchenko</name>
-        </developer>
-        <developer>
-            <id>aPavar</id>
-            <name>Andrey Pavar</name>
-        </developer>
-    </developers>
+    <modules>
+        <module>aquality-selenium-template</module>
+        <module>aquality-selenium-template-cucumber</module>
+    </modules>
+
+    <properties>
+        <aspectj.version>1.8.10</aspectj.version>
+        <restassured.version>5.3.0</restassured.version>
+        <data.provider.thread.count>4</data.provider.thread.count>
+    </properties>
 
     <dependencies>
         <dependency>
             <groupId>com.github.aquality-automation</groupId>
-            <artifactId>aquality-selenium-core</artifactId>
-            <version>3.0.0</version>
+            <artifactId>aquality-selenium</artifactId>
+            <version>4.0.0</version>
         </dependency>
 
         <dependency>
-            <groupId>io.github.bonigarcia</groupId>
-            <artifactId>webdrivermanager</artifactId>
-            <version>5.3.2</version>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>31.1-jre</version>
         </dependency>
 
         <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-databind</artifactId>
-            <version>2.14.2</version>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.18.24</version>
+            <scope>provided</scope>
         </dependency>
 
         <dependency>
-            <groupId>org.testng</groupId>
-            <artifactId>testng</artifactId>
-            <version>7.5</version>
-            <scope>test</scope>
+            <groupId>io.rest-assured</groupId>
+            <artifactId>rest-assured</artifactId>
+            <version>${restassured.version}</version>
+            <scope>compile</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>io.rest-assured</groupId>
+            <artifactId>json-schema-validator</artifactId>
+            <version>${restassured.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>io.qameta.allure</groupId>
+            <artifactId>allure-rest-assured</artifactId>
+            <version>2.19.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>commons-validator</groupId>
+            <artifactId>commons-validator</artifactId>
+            <version>1.7</version>
         </dependency>
     </dependencies>
 
@@ -109,117 +79,46 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.1</version>
+                <version>3.8.1</version>
                 <configuration>
                     <source>1.8</source>
                     <target>1.8</target>
                 </configuration>
             </plugin>
-            <plugin>
-                <groupId>org.jacoco</groupId>
-                <artifactId>jacoco-maven-plugin</artifactId>
-                <version>0.8.4</version>
-                <executions>
-                    <execution>
-                        <id>pre-unit-test</id>
-                        <goals>
-                            <goal>prepare-agent</goal>
-                        </goals>
-                        <configuration>
-                            <destFile>${project.build.directory}/jacoco/jacoco-ut.exec</destFile>
-                            <propertyName>surefireArgLine</propertyName>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>post-unit-test</id>
-                        <phase>test</phase>
-                        <goals>
-                            <goal>report</goal>
-                        </goals>
-                        <configuration>
-                            <dataFile>${project.build.directory}/jacoco/jacoco-ut.exec</dataFile>
-                            <outputDirectory>${project.build.directory}/coverage-report</outputDirectory>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
+
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <version>2.20</version>
+                <version>2.22.2</version>
+
                 <configuration>
-                    <argLine>${surefireArgLine} -Dfile.encoding=UTF-8</argLine>
+                    <parallel>classes</parallel>
                     <reuseForks>false</reuseForks>
-                    <suiteXmlFiles>
-                        <suiteXmlFile>src/test/resources/TestSuite.xml</suiteXmlFile>
-                    </suiteXmlFiles>
+                    <testFailureIgnore>false</testFailureIgnore>
+                    <argLine>
+                        -javaagent:"${settings.localRepository}/org/aspectj/aspectjweaver/${aspectj.version}/aspectjweaver-${aspectj.version}.jar"
+                    </argLine>
+                    <properties>
+                        <property>
+                            <name>dataproviderthreadcount</name>
+                            <value>${data.provider.thread.count}</value>
+                        </property>
+                    </properties>
                 </configuration>
+
+                <dependencies>
+                    <dependency>
+                        <groupId>org.aspectj</groupId>
+                        <artifactId>aspectjweaver</artifactId>
+                        <version>${aspectj.version}</version>
+                    </dependency>
+                </dependencies>
             </plugin>
+
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-assembly-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>attached</goal>
-                        </goals>
-                        <phase>package</phase>
-                        <configuration>
-                            <descriptorRefs>
-                                <descriptorRef>jar-with-dependencies</descriptorRef>
-                            </descriptorRefs>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-source-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>attach-sources</id>
-                        <goals>
-                            <goal>jar</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-javadoc-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>attach-javadocs</id>
-                        <goals>
-                            <goal>jar</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-gpg-plugin</artifactId>
-                <version>1.6</version>
-                <executions>
-                    <execution>
-                        <id>sign-artifacts</id>
-                        <phase>verify</phase>
-                        <goals>
-                            <goal>sign</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <groupId>org.sonatype.plugins</groupId>
-                <artifactId>nexus-staging-maven-plugin</artifactId>
-                <version>1.6.8</version>
-                <extensions>true</extensions>
-                <configuration>
-                    <serverId>ossrh</serverId>
-                    <nexusUrl>https://oss.sonatype.org/</nexusUrl>
-                    <autoReleaseAfterClose>true</autoReleaseAfterClose>
-                </configuration>
+                <groupId>io.qameta.allure</groupId>
+                <artifactId>allure-maven</artifactId>
+                <version>2.10.0</version>
             </plugin>
         </plugins>
     </build>

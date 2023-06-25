@@ -1,12 +1,9 @@
-# Build results
-target
-downloads
+# Compiled class file
+*.class
+target/
 
 # Log file
 *.log
-
-# Visualization files
-visualDumps/
 
 # BlueJ files
 *.ctxt
@@ -31,3 +28,6 @@ hs_err_pid*
 *.iws
 *.iml
 *.ipr
+
+# Allure #
+.allure

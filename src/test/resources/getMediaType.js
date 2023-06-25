@@ -1,1 +1,0 @@
-return window.styleMedia.type;
